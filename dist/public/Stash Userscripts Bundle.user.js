@@ -2,8 +2,12 @@
 // @name        Stash Userscripts Bundle
 // @namespace     https://github.com/The-OMG/stash-userscripts
 // @description Stash Userscripts Bundle
-// @version     0.24.2
+// @version     0.24.3
 // @author      The-OMG
+// @updateURL   https://raw.githubusercontent.com/The-OMG/stash-userscripts/master/dist/public/Stash%20Userscripts%20Bundle.user.js
+// @downloadURL https://raw.githubusercontent.com/The-OMG/stash-userscripts/master/dist/public/Stash%20Userscripts%20Bundle.user.js
+// @match       http://enterprise.whatbox.ca:43016/*
+// @match       https://stash.orionsbelt.space/*
 // @match       http://localhost:9999/*
 // @resource    IMPORTED_CSS https://raw.githubusercontent.com/fengyuanchen/cropperjs/main/dist/cropper.min.css
 // @grant       unsafeWindow
