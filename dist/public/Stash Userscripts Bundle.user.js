@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name        Stash Userscripts Bundle
-// @namespace     https://github.com/7dJx1qP/stash-userscripts
+// @namespace     https://github.com/The-OMG/stash-userscripts
 // @description Stash Userscripts Bundle
 // @version     0.24.2
-// @author      7dJx1qP
+// @author      The-OMG
 // @match       http://localhost:9999/*
 // @resource    IMPORTED_CSS https://raw.githubusercontent.com/fengyuanchen/cropperjs/main/dist/cropper.min.css
 // @grant       unsafeWindow
