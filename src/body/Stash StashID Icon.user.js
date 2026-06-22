@@ -85,13 +85,15 @@
     stash.addEventListener('page:scene', function () {
         waitForElementClass("performer-card", function () {
             const sceneId = window.location.pathname.split('/').pop();
+            const sceneData = stash.scenes[sceneId];
+            if (!sceneData) return;
             const performerDatas = {};
-            for (const performerData of stash.scenes[sceneId].performers) {
+            for (const performerData of (sceneData.performers || [])) {
                 performerDatas[performerData.id] = performerData;
             }
             addPerformerStashIDIcons(performerDatas);
-            if (stash.scenes[sceneId].studio) {
-                addSceneStudioStashIDIcons(stash.scenes[sceneId].studio);
+            if (sceneData.studio) {
+                addSceneStudioStashIDIcons(sceneData.studio);
             }
         });
     });

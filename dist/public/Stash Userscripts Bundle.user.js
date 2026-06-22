@@ -2,7 +2,7 @@
 // @name        Stash Userscripts Bundle
 // @namespace     https://github.com/The-OMG/stash-userscripts
 // @description Stash Userscripts Bundle
-// @version     0.24.3
+// @version     0.24.4
 // @author      The-OMG
 // @updateURL   https://raw.githubusercontent.com/The-OMG/stash-userscripts/master/dist/public/Stash%20Userscripts%20Bundle.user.js
 // @downloadURL https://raw.githubusercontent.com/The-OMG/stash-userscripts/master/dist/public/Stash%20Userscripts%20Bundle.user.js
