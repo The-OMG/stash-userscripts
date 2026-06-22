@@ -922,13 +922,13 @@
                 let studioCodeNode;
                 let directorNode;
                 for (const node of searchResultItem.querySelectorAll('h5 .optional-field .optional-field-content')) {
-                    if (node.innerText === remoteData.date) {
+                    if (node.innerText === remoteData?.date) {
                         dateNode = node;
                     }
-                    else if (node.innerText === remoteData.code) {
+                    else if (node.innerText === remoteData?.code) {
                         studioCodeNode = node;
                     }
-                    else if (node.innerText === 'Director: ' + remoteData.director) {
+                    else if (node.innerText === 'Director: ' + remoteData?.director) {
                         directorNode = node;
                     }
                 }
