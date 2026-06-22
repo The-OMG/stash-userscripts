@@ -20,44 +20,8 @@
     `;
 
     let running = false;
-    const buttons = [];
     let maxCount = 0;
-    let sceneId = null;
-
-    function run() {
-        if (!running) return;
-        const button = buttons.pop();
-        stash.setProgress((maxCount - buttons.length) / maxCount * 100);
-        if (button) {
-            const searchItem = getClosestAncestor(button, '.search-item');
-            if (searchItem.classList.contains('d-none')) {
-                setTimeout(() => {
-                    run();
-                }, 0);
-                return;
-            }
-
-            const { id } = stash.parseSearchItem(searchItem);
-            sceneId = id;
-            if (!button.disabled) {
-                button.click();
-            }
-            else {
-                buttons.push(button);
-            }
-        }
-        else {
-            stop();
-        }
-    }
-
-    function processSceneUpdate(evt) {
-        if (running && evt.detail.data?.sceneUpdate?.id === sceneId) {
-            setTimeout(() => {
-                run();
-            }, 0);
-        }
-    }
+    const SAVE_DELAY_MS = 150; // gap between Save clicks; lower = closer to "all at once"
 
     const btnId = 'batch-save';
     const startLabel = 'Save All';
@@ -75,6 +39,14 @@
         }
     };
 
+    function eligibleSaveButtons() {
+        return [...document.querySelectorAll('.btn.btn-primary')].filter(button => {
+            if (button.innerText !== 'Save' || button.disabled) return false;
+            const searchItem = getClosestAncestor(button, '.search-item');
+            return !(searchItem && searchItem.classList.contains('d-none'));
+        });
+    }
+
     function start() {
         if (!confirm("Are you sure you want to batch save?")) return;
         btn.innerHTML = stopLabel;
@@ -82,15 +54,34 @@
         btn.classList.add('btn-danger');
         running = true;
         stash.setProgress(0);
-        buttons.length = 0;
-        for (const button of document.querySelectorAll('.btn.btn-primary')) {
-            if (button.innerText === 'Save') {
-                buttons.push(button);
-            }
+        maxCount = eligibleSaveButtons().length;
+        if (!maxCount) {
+            stop();
+            return;
         }
-        maxCount = buttons.length;
-        stash.addEventListener('stash:response', processSceneUpdate);
-        run();
+        // Self-driving loop: re-query each tick and click the next Save button.
+        // Intentionally does NOT wait on per-scene stash:response events — that
+        // chain stalled forever after the first save when the response id never
+        // matched. We just drain every visible Save button until none remain.
+        const clicked = new WeakSet();
+        let done = 0;
+        (function tick() {
+            if (!running) return;
+            const next = eligibleSaveButtons().find(button => !clicked.has(button));
+            if (!next) {
+                stop();
+                return;
+            }
+            clicked.add(next);
+            try {
+                next.click();
+            } catch (e) {
+                console.error('[batch-save] click failed:', e);
+            }
+            done += 1;
+            stash.setProgress(Math.min(done / maxCount, 1) * 100);
+            setTimeout(tick, SAVE_DELAY_MS);
+        })();
     }
 
     function stop() {
@@ -99,8 +90,6 @@
         btn.classList.add('btn-primary');
         running = false;
         stash.setProgress(0);
-        sceneId = null;
-        stash.removeEventListener('stash:response', processSceneUpdate);
     }
 
     stash.addEventListener('tagger:mutations:header', evt => {
