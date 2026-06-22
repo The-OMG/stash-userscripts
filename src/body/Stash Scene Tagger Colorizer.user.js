@@ -193,7 +193,7 @@
                     titleNode.firstChild.style.color = COLORS.green;
                     nameNode.style.color = COLORS.green;
                 }
-                else {
+                else if (remoteData?.title) {
                     const commonText = findCommon(data.title.toLowerCase(), remoteData.title.toLowerCase());
 
                     colorCommonText(nameNode, data.title, commonText);
@@ -273,8 +273,8 @@
         if (includeTags) {
             for (const tagNode of tagNodes) {
                 tagNode.style.backgroundColor = COLORS.red;
-                for (const remoteTag of remoteData.tags) {
-                    const tag = data.tags.find(o => o.id === remoteTag.stored_id);
+                for (const remoteTag of (remoteData?.tags || [])) {
+                    const tag = (data?.tags || []).find(o => o.id === remoteTag.stored_id);
                     if (tag?.name === tagNode.innerText) {
                         tagNode.style.backgroundColor = COLORS.green;
                     }
@@ -282,9 +282,9 @@
             }
             for (const tagNode of matchTagNodes) {
                 tagNode.style.backgroundColor = COLORS.yellow;
-                for (const tag of data.tags) {
+                for (const tag of (data?.tags || [])) {
                     if (tag.name === tagNode.innerText) {
-                        const remoteTag = remoteData.tags.find(o => o.stored_id === tag.id);
+                        const remoteTag = (remoteData?.tags || []).find(o => o.stored_id === tag.id);
                         tagNode.style.backgroundColor = remoteTag ? COLORS.green : COLORS.red;
                     }
                 }

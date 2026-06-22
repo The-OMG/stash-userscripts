@@ -105,7 +105,7 @@
             else if (toggleMode === -1) {
                 wantedState = false;
             }
-            if (optionNode && wantedState !== state) {
+            if (optionNode && button && wantedState !== state) {
                 button.click();
             }
         }
